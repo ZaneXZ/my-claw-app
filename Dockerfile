@@ -23,7 +23,7 @@ RUN mkdir -p data && chown -R node:node /app
 EXPOSE 3000
 
 # 切换到非 root 用户运行（安全最佳实践）
-USER node
+#USER node
 
 # 启动命令
 CMD ["npm", "start"]
