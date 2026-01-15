@@ -1,13 +1,27 @@
-name: Docker Push
-on: [push]
+name: Build and Push to Docker Hub
+
+on:
+  push:
+    branches: [ "main" ]
+
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Login to Docker Hub
-        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-      - name: Build and Push
-        run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/my-app:latest .
-          docker push ${{ secrets.DOCKER_USERNAME }}/my-app:latest
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 使用官方封装好的登录动作，比直接敲命令更稳
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          # 确保这里的变量名和 Settings 里完全一致
+          tags: ${{ secrets.DOCKER_USERNAME }}/my-claw-app:latest
