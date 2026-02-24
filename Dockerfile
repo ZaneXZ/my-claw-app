@@ -1,5 +1,5 @@
 # [关键修改] 使用国内镜像代理拉取基础镜像，解决构建卡顿问题
-//FROM docker.m.daocloud.io/node:18-alpine
+# FROM docker.m.daocloud.io/node:18-alpine
 
 # 设置容器内工作目录
 WORKDIR /app
